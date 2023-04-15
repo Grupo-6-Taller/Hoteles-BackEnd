@@ -5,12 +5,9 @@ const { Promise } = require('mongoose');
 
 const getEvento = async (req = request, res = response) => {
 
-   
- 
-
     const listaEvento = await Promise.all([
         Evento.countDocuments(),
-        Evento.find()
+        Evento.find().populate('evento' , 'nombre')
     ]);
 
     res.json({

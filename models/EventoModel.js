@@ -1,13 +1,13 @@
 const { Schema, model } = require("mongoose")
 
 const EventoSchema = Schema({
-    tipo: {
-        type: String,
-        required: [true, 'el nombre es obligatorio'],
-        unique: true
+    evento: {
+        type: Schema.Types.ObjectId,
+        ref: 'TipoEvento',
+        required: true
     },
 
-    evento: {
+    nombre: {
         type: String,
         required: [true, 'el nombre es obligatorio'],
         unique: true

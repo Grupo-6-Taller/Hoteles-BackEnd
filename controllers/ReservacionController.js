@@ -11,13 +11,13 @@ const GetReservacion = async (req = request, res = response) => {
     const listaReservacion = await Promise.all([
         Reservacion.countDocuments(),
         Reservacion.find().
-        populate('usuario', "nombre")
-    
+            populate('usuario', "nombre")
+
     ])
 
     res.json({
         msg: 'Get Api de Reservacions',
-       listaReservacion
+        listaReservacion
     })
 
 
@@ -28,8 +28,8 @@ const getReservacionId = async (req = request, res = response) => {
 
     const { id } = req.params;
     const Reservacion = await Reservacion.findById(id).
-    populate('usuario','nombre').
-    populate('servicio', "nombre")
+        populate('usuario', 'nombre').
+        populate('servicio', "nombre")
 
     res.json({
         msg: 'Get Api de reservacion',
@@ -39,12 +39,11 @@ const getReservacionId = async (req = request, res = response) => {
 
 const PostReservacion = async (req = request, res = response) => {
 
-    const {  ...body } = req.body;
-   
+    const { servicio, usuario, ...body } = req.body;
+
     const data = {
         ...body,
-     
-        // usuario: req.usuario._id
+        usuario: req.usuario._id
     }
 
 
@@ -97,11 +96,34 @@ const DeleteReservacion = async (req = request, res = response) => {
 
 }
 
+const PostServicio = async (req = request, res = response) => {
+    const data = {
+        usuario: req.usuario._id,
+        reservacion: req.params
+    }
+    
+
+    const agregarReservacion = await Reservacion.updateOne(
+        {_id : data.reservacion},
+        {$push: {servicio: req.body.servicio}},
+        {new: true}
+
+
+    )
+   res.status(201).json({
+        msg: 'Post api',
+        agregarReservacion,
+      
+    })
+
+}
+
 module.exports = {
 
     GetReservacion,
     DeleteReservacion,
     PostReservacion,
     PutReservacion,
+    PostServicio
 
 }

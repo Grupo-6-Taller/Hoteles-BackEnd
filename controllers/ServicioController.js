@@ -43,7 +43,7 @@ const PostSerevicio = async (req = request, res = response) => {
     const data = {
         ...body,
         nombre: body.nombre.toUpperCase(),
-
+        usuario: req.usuario._id
     }
 
 

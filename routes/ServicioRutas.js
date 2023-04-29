@@ -1,16 +1,21 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { GetReservacion, DeleteReservacion, PostReservacion, PutReservacion} = require('../controllers/ReservacionController');
+const { GetSerevicio, DeleteSerevicio, PostSerevicio, PutSerevicio} = require('../controllers/ServicioController');
+const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
-router.get('/mostrar', GetReservacion);
+router.get('/mostrar', GetSerevicio);
 
-router.post('/agregar', PostReservacion);
+router.post('/agregar',[
+    validarJWT,
+    validarCampos
+] , PostSerevicio);
 
-router.delete('/delete/:id', DeleteReservacion);
+router.delete('/delete/:id', DeleteSerevicio);
 
-router.put('/editar/:id', PutReservacion)
+router.put('/editar/:id', PutSerevicio)
 
 
 module.exports = router;

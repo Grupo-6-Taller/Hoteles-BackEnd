@@ -12,11 +12,11 @@ const ReservacionSchema = Schema({
         required: true
     },
 
-    servicio: {
+    servicio: [{
         type: Schema.Types.ObjectId,
         ref: 'Servicio',
-        required: true
-    },
+        
+    }],
      
 })
 

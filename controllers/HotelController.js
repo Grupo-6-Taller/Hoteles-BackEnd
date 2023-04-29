@@ -23,15 +23,28 @@ const getHotel = async (req = request, res = response) => {
 const PostHoteles = async (req = request, res = response) => {
 
 
-    const { nombre, direccion, evento } = req.body;
-    const HotelDB = new Hotel({ nombre, direccion, evento  });
+    const { estado, ...body } = req.body;
+    const HotelDB = await Hotel.findOne({ nombre: body.nombre });
 
-   
-    await HotelDB.save();
+    if (HotelDB) {
+        return res.status(400).json({
+            msg: `el producto ${HotelDB.nombre}. ya esxiste en la base de datos`
+        })
+    }
+    const data = {
+        ...body,
+        nombre: body.nombre.toUpperCase(),
+        usuario: req.usuario._id
+    }
+
+    const hotel = new Hotel(data)
+
+    await hotel.save()
 
     res.status(201).json({
         msg: 'Post api',
-        HotelDB
+        HotelDB,
+        hotel
     })
 
 }

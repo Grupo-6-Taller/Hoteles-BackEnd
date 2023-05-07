@@ -15,7 +15,8 @@ class Server {
             evento: "/api/evento",
             servicio: "/api/servicio",
             reservacion: "/api/reservacion",
-            tipo: "/api/tipo"
+            tipo: "/api/tipo",
+            factura: "/api/factura"
         }
 
 
@@ -50,6 +51,7 @@ class Server {
         this.app.use(this.paths.servicio , require('../routes/ServicioRutas'))
         this.app.use(this.paths.reservacion , require('../routes/ReservacionRutas'))
         this.app.use(this.paths.tipo , require('../routes/TipoEventoRutas'))
+        this.app.use(this.paths.factura , require('../routes/FacturaRuta'))
     }
 
     listen() {

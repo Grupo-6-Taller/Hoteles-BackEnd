@@ -12,6 +12,9 @@ router.get('/mostrar',  getHotel);
 router.post('/agregar',[ 
     validarJWT,
     esAdminRole,
+    check('nombre', 'el nombre es obligatorio para agregar').not().isEmpty(),
+    check('direccion', 'el password es obligatorio').not().isEmpty(),
+    check('evento', 'la contrase;a minimo tienen que ser 6 caracteres').isLength({ min: 6 }),
     validarCampos
 ] , PostHoteles);
 

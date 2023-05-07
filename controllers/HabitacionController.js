@@ -6,6 +6,8 @@ const { Promise } = require('mongoose');
 
 const GetHabitacion = async (req = request, res = response) => {
 
+    
+
     const listaHabitaciones = await Promise.all([
         Habitacion.countDocuments(),
         Habitacion.find().

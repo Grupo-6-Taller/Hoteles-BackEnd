@@ -6,6 +6,14 @@ const ReservacionSchema = Schema({
         required: [true, 'el stock es obligatorio']
     },
 
+
+     habitacion: {
+        type: Schema.Types.ObjectId,
+        ref: 'Habitacion',
+        required: true
+
+    },
+
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
@@ -17,6 +25,13 @@ const ReservacionSchema = Schema({
         ref: 'Servicio',
         
     }],
+
+    total:{
+        type: Number,
+        default: 0
+
+    },
+
      
 })
 

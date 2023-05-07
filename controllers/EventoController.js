@@ -5,9 +5,11 @@ const { Promise } = require('mongoose');
 
 const getEvento = async (req = request, res = response) => {
 
+    const query = {estado: true}
+
     const listaEvento = await Promise.all([
-        Evento.countDocuments(),
-        Evento.find().populate('evento' , 'nombre')
+        Evento.countDocuments(query),
+        Evento.find(query).populate('evento' , 'nombre')
     ]);
 
     res.json({
@@ -82,8 +84,8 @@ const deleteEvento = async (req = request, res = response) => {
     res.json({
         msg: "api para borrar",
         deleteEvento
-    })
-}
+   })
+} 
 
 module.exports = {
     getEvento,

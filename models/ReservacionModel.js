@@ -6,6 +6,11 @@ const ReservacionSchema = Schema({
         required: [true, 'el stock es obligatorio']
     },
 
+    fecha:{
+        type: Date,
+        requiere: true,
+    },
+
 
      habitacion: {
         type: Schema.Types.ObjectId,

@@ -7,12 +7,39 @@ const FacturaSchema = Schema({
         ref: 'Reservacion',
         required: true
     },
+
     
+
+
+    habitacion: {
+        type: Schema.Types.ObjectId,
+        ref: 'Habitacion',
+        required: true
+
+    },
+
+    usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
+    },
+
+    servicio: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Servicio',
+        
+    }],
     
     fecha:{
         type: Date,
         requiere: true,
-    }
+    },
+
+    total: {
+        type: Number
+    },
+    
+ 
 
 })
 

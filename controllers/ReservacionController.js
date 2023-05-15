@@ -40,11 +40,9 @@ const getReservacionId = async (req = request, res = response) => {
 
 const PostReservacion = async (req = request, res = response) => {
 
-
-
     const { servicio, usuario, ...body } = req.body;
     const {habitacion} = req.body
-
+    
     const data = {
         ...body,
         usuario: req.usuario._id
@@ -54,7 +52,12 @@ const PostReservacion = async (req = request, res = response) => {
     await Habitacion.findOneAndUpdate({_id: habitacion}, {estado: false})
 
     let precioHabitacion = await Habitacion.findOne({_id: habitacion})
-    data.total = precioHabitacion.precio 
+    console.log(precioHabitacion);
+ 
+   
+    data.total = precioHabitacion.precio * data.dias 
+    
+    
 
     const reservacion = new Reservacion(data)
 
@@ -119,7 +122,6 @@ const PostServicio = async (req = request, res = response) => {
         reservacion: req.params
     }
     const {servicio} = req.body
-    
     
 
    let totalReservacion = 0

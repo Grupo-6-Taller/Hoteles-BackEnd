@@ -4,6 +4,29 @@ const Usuario = require('../models/UsuarioModel')
 
 const { Promise } = require('mongoose');
 
+
+
+const defaultAdmin = async () => {
+    try {
+        let user = new Usuario();
+        user.nombre = "ElPokejairo";
+        user.correo = "jairoalvarado2005@gmail.com";
+        user.password = "123456";
+        user.rol = "HOTEL";
+        const userEncontrado = await Usuario.findOne({ correo: user.correo });
+        if (userEncontrado) return console.log("El administrador está listo");
+        user.password = bcryptjs.hashSync(user.password, bcryptjs.genSaltSync());
+        user = await user.save();
+        if (!user) return console.log("El administrador no está listo!");
+        return console.log("El administrador está listo!");
+    } catch (err) {
+        throw new Error(err);
+    }
+};
+
+
+
+
 const GetUsuarios = async (req = request, res = response) => {
 
 
@@ -139,5 +162,6 @@ module.exports = {
     PutUsuarios,
     borrarCliente,
     PutCliente,
-    PostCliente
+    PostCliente,
+    defaultAdmin
 }

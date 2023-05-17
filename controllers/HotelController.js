@@ -20,6 +20,20 @@ const getHotel = async (req = request, res = response) => {
 
 }
 
+const hotelPorNombre = async(req = request, res = response) => {
+
+    const { nombre } = req.body;
+    const hotel = await Hotel.findById( nombre )
+                                            
+
+    res.json({
+        msg: 'categoria por id',
+        hotel
+    });
+
+}
+
+
 const PostHoteles = async (req = request, res = response) => {
 
 
@@ -83,6 +97,7 @@ module.exports = {
     getHotel,
     PostHoteles,
     DeleteHotel,
+    hotelPorNombre,
     PutHotel
 
 }

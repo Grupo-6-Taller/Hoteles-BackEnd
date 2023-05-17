@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors');
 
 const { dbConection } = require('../database/config');
+const { defaultAdmin } = require('../controllers/UsuarioController');
 
 class Server {
     constructor(){
@@ -25,6 +26,8 @@ class Server {
         this.middlewares();
 
         this.routes();
+
+        defaultAdmin()
 
     }
 

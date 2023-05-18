@@ -19,7 +19,7 @@ const UsuarioSchema = Schema({
    
     rol: {
         type: String,
-        required: true,
+       
     },
   
 })

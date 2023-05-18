@@ -13,9 +13,7 @@ const HabitacionSchema = Schema({
         type: String,
         required: [true, 'el nombre es obligatorio'],
         unique: true
-
     },
-
 
     precio: {
         type: Number,

@@ -4,7 +4,7 @@ const HotelSchema = Schema({
     nombre: {
         type: String,
         required: [true, 'el nombre es obligatorio'],
-     
+        unique: true
     },
     direccion: {
         type: String,
@@ -22,6 +22,15 @@ const HotelSchema = Schema({
         default: true,
     },
 
+    habitacion: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Habitacion'
+    }],
+
+    reservacion: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Reservacion'
+    }]
     
 })
 

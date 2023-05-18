@@ -12,7 +12,7 @@ const defaultAdmin = async () => {
         user.nombre = "ElPokejairo";
         user.correo = "jairoalvarado2005@gmail.com";
         user.password = "123456";
-        user.rol = "HOTEL";
+        user.rol = "ADMIN";
         const userEncontrado = await Usuario.findOne({ correo: user.correo });
         if (userEncontrado) return console.log("El administrador está listo");
         user.password = bcryptjs.hashSync(user.password, bcryptjs.genSaltSync());

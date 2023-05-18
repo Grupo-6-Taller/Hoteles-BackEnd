@@ -59,12 +59,12 @@ router.delete('/deleteCuenta/:id', [
     validarJWT,
     check('id').custom(existIdOfUser),
     check('id', "id de mongo no existe").isMongoId(),
-
     validarCampos
 ], borrarCliente)
 
 router.put('/editar/:id', [
     validarJWT,
+    esAdminRole,
     check('nombre', 'el nombre es obligatorio para agregar').not().isEmpty(),
     check('password', 'el password es obligatorio').not().isEmpty(),
     check('password', 'la contrase;a minimo tienen que ser 6 caracteres').isLength({ min: 6 }),

@@ -1,11 +1,18 @@
 const Hotel = require('../models/HotelModel')
 
+const Reservacion =require('../models/ReservacionModel')
+const Habitacion =require('../models/HabitacionModel')
+
+
 const { response, request } = require('express');
 const { Promise } = require('mongoose');
 
-const getHotel = async (req = request, res = response) => {
 
+const getHotel = async (req = request, res = response) => {
+    
+    
    
+ 
 
     const listaHotel = await Promise.all([
         Hotel.countDocuments(),
@@ -20,15 +27,79 @@ const getHotel = async (req = request, res = response) => {
 
 }
 
+
+const getHabitacionesHotel = async (req = request, res = response) => {
+
+        const {id} = req.params
+
+        
+        const hotel = await Hotel.findOne({_id: id}).populate("habitacion")
+
+        const habitaciones = hotel.habitacion 
+        const habitacionesTrue = await Habitacion.aggregate([
+            {
+                $match: {
+                  _id: { $in: hotel.habitacion },
+                  estado: true,
+                },
+              }
+        ])
+        res.json({
+            msg:'get Api Server',
+            habitacionesTrue
+        })
+
+
+}
+
 const hotelPorNombre = async(req = request, res = response) => {
 
     const { nombre } = req.body;
-    const hotel = await Hotel.findById( nombre )
-                                            
+    const hotel = await Hotel.find( {nombre : nombre} )
+    
+    if (!hotel) {
+        return res.status(404).json({
+            msg: ` nombre no encontrado`
+        })
+    }
 
     res.json({
         msg: 'categoria por id',
         hotel
+    });
+
+}
+
+const hotelPorDireccion = async(req = request, res = response) => {
+
+    const { direccion } = req.body;
+    const hotel = await Hotel.find( {direccion : direccion} )
+    
+    if (!hotel) {
+        return res.status(404).json({
+            msg: ` dirreciion no encontrado`
+        })
+    }
+
+    res.json({
+        msg: 'categoria por id',
+        hotel
+    });
+
+}
+
+const usuariosPorHotel = async(req = request, res = response) => {
+
+    const { id } = req.params;
+    const hotel = await Hotel.findOne({_id: id}).populate('reservacion').populate({
+        path: "reservacion",
+        populate: { path: "usuario" },
+      })
+    const reservaciones = hotel.reservacion
+
+    res.json({
+        msg: 'categoria por id',
+        reservaciones
     });
 
 }
@@ -39,12 +110,20 @@ const PostHoteles = async (req = request, res = response) => {
 
     const { estado, ...body } = req.body;
     const HotelDB = await Hotel.findOne({ nombre: body.nombre });
-
+    const DireccionDb = await Hotel.findOne({ direccion: body.direccion });
+    
     if (HotelDB) {
         return res.status(400).json({
-            msg: `el producto ${HotelDB.nombre}. ya esxiste en la base de datos`
+            msg: `el Nombre ${HotelDB.nombre}. ya esxiste en la base de datos`
         })
     }
+
+    if (DireccionDb) {
+        return res.status(400).json({
+            msg: `la dirreccion ${DireccionDb.direccion}. ya esxiste en la base de datos`
+        })
+    }
+  
     const data = {
         ...body,
         nombre: body.nombre.toUpperCase(),
@@ -57,7 +136,6 @@ const PostHoteles = async (req = request, res = response) => {
 
     res.status(201).json({
         msg: 'Post api',
-        HotelDB,
         hotel
     })
 
@@ -98,7 +176,10 @@ module.exports = {
     PostHoteles,
     DeleteHotel,
     hotelPorNombre,
-    PutHotel
+    PutHotel,
+    hotelPorDireccion,
+    getHabitacionesHotel,
+    usuariosPorHotel
 
 }
 

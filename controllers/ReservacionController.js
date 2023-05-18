@@ -3,6 +3,7 @@ const { response, request } = require('express');
 const Reservacion = require('../models/ReservacionModel');
 const Servicio =require('../models/ServicioModel')
 const Habitacion = require('../models/HabitacionModel')
+const Hotel = require('../models/HotelModel')
 
 const { Promise } = require('mongoose');
 
@@ -49,22 +50,26 @@ const PostReservacion = async (req = request, res = response) => {
 
     }
 
-    await Habitacion.findOneAndUpdate({_id: habitacion}, {estado: false})
+ const habitacionHotel = await Habitacion.findOneAndUpdate({_id: habitacion}, {estado: false})
+   
 
     let precioHabitacion = await Habitacion.findOne({_id: habitacion})
-    console.log(precioHabitacion);
+
  
-   
     data.total = precioHabitacion.precio * data.dias 
-    
-    
-
     const reservacion = new Reservacion(data)
+    console.log(reservacion);
+    // obtener id de hotel
+    
+   const rev = await Hotel.updateOne(
+        {_id: habitacionHotel.hotel},
+        {$push: { reservacion:  reservacion._id}
+        }
+        )
 
 
+    //obtener id de la reservacion
     await reservacion.save()
-
-  
 
     res.status(201).json({
         msg: 'Post api',

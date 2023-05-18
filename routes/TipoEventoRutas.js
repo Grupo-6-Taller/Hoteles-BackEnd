@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const {  getTipo, postTipo, putTipo, deleteTipo} = require('../controllers/TipoEventoController');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { esAdminRole } = require('../middlewares/validar-roles');
+const { esAdminHotel } = require('../middlewares/validar-roles');
 const { idTipo } = require('../helpers/db-validators');
 
 
@@ -13,14 +13,14 @@ router.get('/mostrar' ,getTipo);
 
 router.post('/agregar',[
     validarJWT,
-    esAdminRole,
+    esAdminHotel,
     check('nombre', 'el nombre es obligatorio para agregar').not().isEmpty(),
     validarCampos
 ], postTipo);
 
 router.delete('/delete/:id',[
     validarJWT,
-    esAdminRole,
+    esAdminHotel,
     check('id', "id de mongo no existe").isMongoId(),
     check('id').custom(idTipo),
     validarCampos
@@ -28,7 +28,7 @@ router.delete('/delete/:id',[
 
 router.put('/editar/:id',[
     validarJWT,
-    esAdminRole,
+    esAdminHotel,
     check('nombre', 'el nombre es obligatorio para agregar').not().isEmpty(),
     check('id').custom(idTipo),
     check('id', "id de mongo no existe").isMongoId(),

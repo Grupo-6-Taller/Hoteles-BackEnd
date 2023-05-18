@@ -17,7 +17,8 @@ const ReservacionSchema = Schema({
         ref: 'Habitacion',
         required: true
 
-    },
+    }, 
+    
 
     usuario: {
         type: Schema.Types.ObjectId,
@@ -34,7 +35,6 @@ const ReservacionSchema = Schema({
     total:{
         type: Number,
         default: 0
-
     },
 
      

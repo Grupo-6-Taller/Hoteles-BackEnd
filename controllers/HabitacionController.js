@@ -2,6 +2,7 @@
 const { response, request } = require('express');
 
 const Habitacion = require('../models/HabitacionModel')
+const Hotel = require('../models/HotelModel')
 const { Promise } = require('mongoose');
 
 const GetHabitacion = async (req = request, res = response) => {
@@ -23,26 +24,36 @@ const GetHabitacion = async (req = request, res = response) => {
 const PostHabitacion = async (req = request, res = response) => {
 
     const { estado, ...body } = req.body;
-    const HabitacionDB = await Habitacion.findOne({ nombre: body.nombre });
-
-    if (HabitacionDB) {
+    const HotelDB = await Habitacion.findOne({ nombre: body.nombre });
+    
+    if (HotelDB) {
         return res.status(400).json({
-            msg: `el habitacion ${HabitacionDB.nombre}. ya esxiste en la base de datos`
+            msg: `el Nombre ${HotelDB.nombre}. ya esxiste en la base de datos`
         })
     }
-    const data = {
+    data = {
         ...body,
         nombre: body.nombre.toUpperCase(),
     }
-
+    
+    console.log(data.hotel);
+ 
 
     const habitacion = new Habitacion(data)
+  
+    const agregarHabitacion = await Hotel.updateOne(
+        {_id : data.hotel},
+        {$push: {habitacion: habitacion._id}},
+        {new: true}
+
+    )
 
     await habitacion.save()
 
     res.status(201).json({
         msg: 'Post api',
-        habitacion
+        habitacion,
+        agregarHabitacion
     })
 
 }

@@ -29,6 +29,20 @@ const generarFactura = async (req = request, res = response) => {
 
 }
 
+const getFacturaId = async (req = request, res = response) => {
+
+    const { id } = req.params;
+    const factura = await Factura.findById(id).populate('habitacion','nombre')
+
+    res.json({
+        msg: 'Get Api de Tipo eventoria',
+        factura
+    })
+}
+
+
+
 module.exports = {
-    generarFactura
+    generarFactura,
+    getFacturaId
 }
